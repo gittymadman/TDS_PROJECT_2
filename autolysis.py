@@ -195,9 +195,13 @@ def llm_vision_image_to_text(url_image):
 
     
     result = response.json()
-    print(result)
-    output = result['choices'][0]['message']['content']
-    
+    # print(result)
+    # output = result['choices'][0]['message']['content']
+
+    if 'choices' in result and len(result['choices'])>0:
+        output = result['chioces'][0]['message']['content']
+    else:
+        output = "Not proper return format :("
     return output
 
 
