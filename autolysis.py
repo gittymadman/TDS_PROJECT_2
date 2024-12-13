@@ -2,13 +2,13 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "ipykernel>=6.29.5",
-# "matplotlib>=3.9.3",
-# "numpy>=2.2.0",
-# "openai>=1.57.1",
-# "pandas>=2.2.3",
-# "python-dotenv>=1.0.1",
-# "requests>=2.32.3",
-# "seaborn>=0.13.2",
+#     "matplotlib>=3.9.3",
+#     "numpy>=2.2.0",
+#     "openai>=1.57.1",
+#     "pandas>=2.2.3",
+#     "python-dotenv>=1.0.1",
+#     "requests>=2.32.3",
+#     "seaborn>=0.13.2",
 # ]
 # [project.optional-dependencies]
 # pandas-dependencies = [
