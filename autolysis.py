@@ -229,6 +229,8 @@ def run_python_code(main_directory_path,folder_path,file_path='extracted_code.py
     with open(out_file_path,'w') as file:
         subprocess.run(['python',code_file_path],stdout=file,stderr=file,check=True,cwd=main_directory_path) # check=True stops execution if there is any error in executing generated python file.
     print(f"O/P saved in {out_file} ")
+    os.remove(out_file_path)
+    os.remove(code_file_path)
     return
 
 
