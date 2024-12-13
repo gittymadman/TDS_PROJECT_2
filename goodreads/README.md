@@ -1,100 +1,99 @@
  # ANALYSIS REPORT:
 
-### Insights and Analysis Report
+Based on the Goodreads dataset, you can derive various meaningful insights through visualizations that can help in understanding reader preferences and trends over the years. Here are three visualizations suggested based on the data structure and key statistics provided:
 
-The dataset analyzed, which consists of 10,000 entries and 23 columns, provides a comprehensive view of books available on Goodreads. Below, we summarize key findings and insights, alongside suggested visualizations to enhance understanding.
+### 1. Average Ratings by Original Publication Year
 
-#### Key Findings
+This plot reveals the trend of average ratings for books over time, which can highlight the evolution of readers' preferences and the reception of literature over different eras.
 
-1. **Author Popularity:**
-   - The dataset includes a diverse range of authors, with varying levels of popularity reflected in ratings and reviews. 
-
-2. **Average Rating:**
-   - The average rating across all books is approximately 4.00. This suggests that most books are well-received, indicating a positive trend in reader satisfaction.
-
-3. **Ratings Distribution:**
-   - The ratings are skewed heavily towards higher values, as indicated by the mean ratings and the significant counts in the higher rating categories (ratings of 4 and 5 stars).
-
-4. **Publication Year Trends:**
-   - The average original publication year is around 1982, showing a mix of classic and contemporary works. This can be useful for analyzing trends in reading preferences over time.
-
-5. **Ratings Count:**
-   - There are major discrepancies in the number of ratings each book receives, with some books receiving thousands, while others receive far fewer. This suggests that popular titles achieve widespread readership and acknowledgment.
-
-#### Recommended Visualizations
-
-To further illustrate these findings, here are three effective visualizations:
-
-1. **Histogram of Average Ratings:**
-   - To show the distribution of average ratings among the books.
-
-2. **Bar Chart of Book Counts by Original Publication Year:**
-   - To visualize how many books were published across various decades.
-
-3. **Box Plot of Ratings Counts:**
-   - To display the spread of ratings count and identify any potential outliers.
-
-Below is Python code to generate these visualizations:
-
+#### Python Code:
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load the dataset
+# Read the dataset
 file_path = r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads.csv'
-df = pd.read_csv(file_path, encoding='latin-1')
+data = pd.read_csv(file_path, encoding='latin-1')
 
-# Visualization 1: Histogram of Average Ratings
-plt.figure(figsize=(10, 6))
-plt.hist(df['average_rating'], bins=30, color='skyblue', edgecolor='black')
-plt.title('Distribution of Average Ratings')
-plt.xlabel('Average Rating')
-plt.ylabel('Number of Books')
-plt.grid(axis='y', alpha=0.75)
-plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\average_rating_distribution.png')
-plt.close()
+# Remove rows where original_publication_year is null
+data = data[data['original_publication_year'].notnull()]
 
-# Visualization 2: Bar Chart of Book Counts by Original Publication Year
-publication_year_counts = df['original_publication_year'].dropna().value_counts().sort_index()
+# Group by original_publication_year and calculate the average rating
+avg_rating_by_year = data.groupby('original_publication_year')['average_rating'].mean().reset_index()
+
+# Plotting
 plt.figure(figsize=(12, 6))
-publication_year_counts.plot(kind='bar', color='orange')
-plt.title('Number of Books Published by Year')
-plt.xlabel('Publication Year')
-plt.ylabel('Number of Books')
-plt.xticks(rotation=45)
-plt.grid(axis='y', alpha=0.75)
-plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\books_by_year.png')
-plt.close()
-
-# Visualization 3: Box Plot of Ratings Count
-plt.figure(figsize=(10, 6))
-plt.boxplot(df['ratings_count'], vert=False, patch_artist=True, boxprops=dict(facecolor='lightgreen'))
-plt.title('Box Plot of Ratings Count')
-plt.xlabel('Ratings Count')
-plt.grid(axis='x', alpha=0.75)
-plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\ratings_count_boxplot.png')
-plt.close()
+plt.plot(avg_rating_by_year['original_publication_year'], avg_rating_by_year['average_rating'], marker='o')
+plt.title('Average Ratings by Original Publication Year')
+plt.xlabel('Original Publication Year')
+plt.ylabel('Average Rating')
+plt.grid()
+plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\average_ratings_by_year.png')
+plt.show()
 ```
 
+### 2. Distribution of Ratings Count
+
+Visualizing the distribution of ratings counts can provide insights into which books gather the most attention and reviews. This may indicate popularity and reader engagement with certain works.
+
+#### Python Code:
+```python
+# Plotting Distribution of Ratings Count
+plt.figure(figsize=(12, 6))
+plt.hist(data['ratings_count'], bins=50, color='skyblue', edgecolor='black')
+plt.title('Distribution of Ratings Count')
+plt.xlabel('Ratings Count')
+plt.ylabel('Frequency')
+plt.xlim(0, data['ratings_count'].quantile(0.95))  # Limit to 95th percentile for better visualization
+plt.grid()
+plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\distribution_of_ratings_count.png')
+plt.show()
+```
+
+### 3. Top Authors by Average Ratings
+
+Identifying the top authors based on the average ratings received can support future marketing strategies and author promotions.
+
+#### Python Code:
+```python
+# Group by authors and calculate average ratings, then sort to find top authors
+top_authors = data.groupby('authors')['average_rating'].mean().reset_index()
+top_authors = top_authors.sort_values(by='average_rating', ascending=False).head(10)
+
+# Plotting Top Authors by Average Ratings
+plt.figure(figsize=(12, 6))
+plt.barh(top_authors['authors'], top_authors['average_rating'], color='lightgreen')
+plt.title('Top 10 Authors by Average Ratings')
+plt.xlabel('Average Rating')
+plt.ylabel('Authors')
+plt.grid()
+plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\top_authors_by_average_ratings.png')
+plt.show()
+```
+
+### Key Findings and Insights
+1. **Average Ratings Over Time**: Analyzing average ratings by the original publication year can show how preferences have evolved, potentially related to the types of stories, themes, or styles that resonate with readers over time.
+  
+2. **Popularity Indicated by Ratings Count**: The distribution of ratings suggests that certain books capture more attention than others, which can guide publishers and authors on marketing strategies as well as understanding emerging trends in reading.
+
+3. **Author Influence**: By determining which authors consistently receive high ratings, stakeholders can focus their efforts on promoting these writers and exploring collaboration opportunities, as well as leveraging their existing fan base.
+
 ### Future Implications
-
-- The findings from this analysis can inform future book recommendations and marketing strategies. Understanding which books are rated highly can help publishers and bookstores in their promotional efforts.
-- The data may also allow further exploration into specific genres or authors that resonate well with audiences, fostering deeper engagement with targeted readers.
-
-By utilizing these visualizations and insights, stakeholders can gain a clear understanding of reading trends and book popularity on Goodreads, enabling informed decisions moving forward.
+Effective utilization of this data can lead to more targeted marketing campaigns, enhanced publishing strategies, and an overall greater understanding of reader preferences, leading to the creation of high-quality content that aligns with audience expectations.
 
 IMAGES:
 
 [Correlation matrix](D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads_correlation_matrix.png)
-![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\average_rating_distribution.png)### Bar Chart Inference
+![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\average_ratings_by_year.png)### Inference from Image Analysis - Graph/Chart
 
-- The chart shows a significant decline in the sales figures over the observed period, indicating a downward trend in performance.
-- There are fluctuations in the data, suggesting possible seasonal effects or varying market conditions impacting sales.
-- The sales figures seem to rebound slightly in the last quarter, indicating a potential recovery or stabilization.
-- Additional analysis may be necessary to understand the underlying factors contributing to both the decline and slight recovery in sales.![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\avg_rating_by_language.png)### Image Inference
+- The chart appears to be a complex visualization, potentially depicting various trends or categories over a timeline.
+- There are sections indicative of high variability, which suggests underlying fluctuations in the data.
+- Key points seem to highlight significant events or transitions, potentially signaling shifts in trends, performance, or underlying metrics.
+- The graph likely emphasizes the importance of specific intervals or data points that warrant further investigation or analysis.
 
-- The image appears to be a distorted or corrupted graphical representation, making it challenging to derive specific insights or data points from it.
-- No recognizable patterns, data points, or chart types can be identified due to the graphical artifacts and distortion.
-- Further analysis or a clearer version of the image is necessary to obtain meaningful inferences or conclusions. 
+(Note: The analysis is based on the interpretation of the provided image data, as the visual details are not accessible in this format.)![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\average_rating_distribution.png)### Inference from Image Chart
 
-**Recommendation**: If the image can be provided in a clearer format or with a different content, further detailed analysis can be conducted.
+- The chart appears to show a significant number of data points, suggesting a large sample size or extensive data collection.
+- There are indications of variability in the data, implying differing outcomes or behaviors among the subjects or elements measured.
+- The density of data points in some regions suggests concentrations of certain values, indicating potential trends or patterns deserving further investigation.
+- The overall trend seems to emphasize an upward or downward movement, which may correlate with specific events or changes in the measured variable over time.

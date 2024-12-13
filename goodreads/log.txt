@@ -1,0 +1,4 @@
+D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\extracted_code.py:49: UserWarning: Glyph 141 (\x8d) missing from font(s) DejaVu Sans.
+  plt.savefig(r'D:\IITM-BSC\TDS\TDS_PROJECT_2\goodreads\top_authors_by_average_ratings.png')
+C:\Users\HP\AppData\Local\Programs\Python\Python312\Lib\tkinter\__init__.py:862: UserWarning: Glyph 141 (\x8d) missing from font(s) DejaVu Sans.
+  func(*args)

@@ -195,7 +195,7 @@ def llm_vision_image_to_text(url_image):
 
     
     result = response.json()
-    # print(result)
+    print(result)
     output = result['choices'][0]['message']['content']
     
     return output
