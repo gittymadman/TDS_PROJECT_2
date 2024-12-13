@@ -112,8 +112,6 @@ def save_readme(narrative,folder_path):
         file.write('\n\nIMAGES:\n\n')
         file.write(f"[Correlation matrix]({folder_path}_correlation_matrix.png)\n") # correlation_matrix.png acts as a link !!
         file.close()
-    new_file_path = folder_path
-    os.rename(file_path,)
     
     return 
 # def get_function_desc(function_name,description,):
@@ -136,7 +134,7 @@ def ask_question_to_open_ai(summary,analysis,folder_path,csv_file_path):
         "messages":[
             {
                 "role":"system",
-                "content":'''You are an assistant for data analysis. Provide insights, suggest visualizations, infer patterns, and summarize data based on given column names and details. List meaningful plots that can be created, and generate Python code to extract key findings and plot these visualizations. Give code for plotting only top 3 visualizations. Ensure plots have clear file names. Use pandas and matplotlib only.One visualization should have one chart only. For file reading, use the column structure provided by the user. Avoid unnecessary tokens and no need for correlation matrix plot.Properly label each chart you are generating and do not generate any null charts.'''
+                "content":'''You are an assistant for data analysis. Provide insights, suggest visualizations, infer patterns, and summarize data based on given column names and details. List meaningful plots that can be created, and generate Python code to extract key findings and plot these visualizations. Give code for plotting only top 3 visualizations. Ensure plots have clear file names. Use pandas and matplotlib only.One visualization should have one chart only. For file reading, use the column structure provided by the user. Avoid unnecessary tokens and no need for correlation matrix plot.Properly label each chart you are generating and do not generate any null charts. Try to remove datapoints which form small part of whole graph'''
             },
             {
                 "role":"user",
@@ -196,7 +194,7 @@ def llm_vision_image_to_text(url_image):
 
     
     result = response.json()
-    print(result)
+    # print(result)
     output = result['choices'][0]['message']['content']
     
     return output

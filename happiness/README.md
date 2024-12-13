@@ -1,117 +1,92 @@
  # ANALYSIS REPORT:
 
-### Report on Happiness Dataset Analysis
+### Data Analysis Report: Happiness Dataset
 
-#### Introduction
-The analysis of the happiness dataset, encompassing 2363 entries across 11 key indicators of well-being, reveals critical insights into how various factors influence perceived happiness across different countries and years. With columns such as Life Ladder, Log GDP per capita, and Social Support, this comprehensive review aims to uncover trends and correlations within the dataset that can inform future strategies for improving global happiness.
+In our analysis of the happiness dataset, we explored various dimensions of well-being across different countries, with a focus on factors such as life satisfaction, economic performance, and social support. The dataset comprises 2,363 entries and 11 columns featuring data points related to countries' happiness levels from 2005 to 2023.
 
-#### Key Findings
-1. **Life Ladder**: The average life ladder score is approximately 5.48, suggesting a moderate level of subjective well-being across countries. The scores range from a minimum of 1.28 to a maximum of 8.02, with significant variations hinting at disparities in happiness levels.
+#### Key Findings:
+- The average **Life Ladder** score across the dataset is approximately **5.48**, indicating a moderate level of life satisfaction among the surveyed countries.
+- **Log GDP per capita** has a mean of **9.40**, which reflects the economic standing of the countries considered. This metric aids in understanding the relationship between income and happiness.
+- **Social support** is measured with an average score of **0.81**, reflecting the perceived social support experienced by individuals in various countries.
+- Significant missing data points in the metrics of **Generosity** and **Freedom to make life choices** may distort the overall analysis, calling for further investigation into countries with incomplete datasets.
 
-2. **GDP Influence**: The mean Log GDP per capita is about 9.40. This indicates that, though GDP is a significant economic measure, its impact on happiness is not uniformly felt across all nations. There are countries with low GDPs that still report high life ladder scores.
+#### Visualizations:
+To gain deeper insights, we will generate three key visualizations. Each will provide a clearer picture of the relationships between different dimensions of happiness and correlate how these factors might affect overall life satisfaction.
 
-3. **Social Support**: With a mean score of 0.81, social support stands out as a vital determinant for happiness. Countries offering greater social networks tend to have higher happiness scores, showcasing the importance of community and relationships.
+1. **Life Ladder vs. Log GDP per Capita:**
+   This scatter plot will help illustrate the relationship between economic status and life satisfaction, revealing trends and outliers.
+   
+2. **Average Life Ladder by Year:**
+   A line chart to observe how happiness has changed over the years, indicating trends that might suggest the impact of social policies or global events.
 
-4. **Healthy Life Expectancy**: An average healthy life expectancy of about 63.4 years suggests that health is a crucial factor impacting happiness. The maximum value reaches up to 74.6 years, establishing a positive correlation between longer life expectancy and life satisfaction.
+3. **Distribution of Social Support:**
+   A histogram to provide insight into the spread of social support values, highlighting how support levels vary across different nations.
 
-5. **Freedom to Make Life Choices**: The average value of 0.75 in freedom to make life choices underlines the significance of individual autonomy in influencing happiness. Higher scores in this area correspond to improved life ladder rankings.
-
-6. **Generosity and Corruption**: Generosity shows low variations and a mean close to zero, while perceptions of corruption have a mean of approximately 0.74. These factors highlight that altruism and integrity play roles in societal well-being, particularly in countries where corruption is perceived to be high.
-
-7. **Affect**: With average positive affect at 0.65 and negative affect at 0.27, the data reveal that positive experiences tend to overshadow negative ones, aligning with notions that mental well-being significantly impacts overall happiness.
-
-#### Visualizations
-To further illustrate these findings, a series of visualizations can provide a clearer understanding of the trends within the data:
-
-1. **Distribution of Life Ladder Scores**:  
-   Visualizing the distribution will help in understanding the variation and central tendency within happiness scores.  
-
-2. **Correlation Between Log GDP per Capita and Life Ladder**:  
-   This scatter plot can highlight how financial prosperity influences happiness directly.
-
-3. **Box Plot of Life Ladder by Country**:  
-   This plot would visualize the differences in happiness scores among various countries.
-
-### Python Code
+### Python Code for Visualizations:
 
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load the dataset
-file_path = r'D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness.csv'
-data = pd.read_csv(file_path, encoding='latin-1')
+# File paths
+csv_file_path = 'D:\\IITM-BSC\\TDS\\TDS_PROJECT_2\\happiness.csv'
+output_directory = 'D:\\IITM-BSC\\TDS\\TDS_PROJECT_2\\happiness\\'
 
-# Set the path for saving images
-save_path = r'D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness'
+# Read the dataset using latin-1 encoding
+data = pd.read_csv(csv_file_path, encoding='latin-1')
 
-# 1. Distribution of Life Ladder Scores
-plt.figure(figsize=(10, 6))
-plt.hist(data['Life Ladder'], bins=20, color='skyblue', edgecolor='black')
-plt.title('Distribution of Life Ladder Scores')
-plt.xlabel('Life Ladder Score')
-plt.ylabel('Frequency')
-plt.grid(axis='y', alpha=0.75)
-plt.savefig(f"{save_path}\\life_ladder_distribution.png")
-plt.close()
+# Remove rows where important values are missing
+data = data.dropna(subset=['Log GDP per capita', 'Life Ladder', 'Social support', 'Healthy life expectancy at birth'])
 
-# 2. Correlation Between Log GDP per Capita and Life Ladder
+# 1. Life Ladder vs. Log GDP per capita
 plt.figure(figsize=(10, 6))
 plt.scatter(data['Log GDP per capita'], data['Life Ladder'], alpha=0.5)
-plt.title('Log GDP per Capita vs Life Ladder')
+plt.title('Life Ladder vs. Log GDP per Capita')
 plt.xlabel('Log GDP per Capita')
-plt.ylabel('Life Ladder Score')
+plt.ylabel('Life Ladder')
 plt.grid()
-plt.savefig(f"{save_path}\\gdp_vs_life_ladder.png")
+plt.savefig(output_directory + 'Life_Ladder_vs_Log_GDP_per_Capita.png')
 plt.close()
 
-# 3. Box Plot of Life Ladder by Country
-plt.figure(figsize=(15, 8))
-data.boxplot(column='Life Ladder', by='Country name', rot=90)
-plt.title('Life Ladder Scores by Country')
-plt.suptitle('')
-plt.xlabel('Country')
-plt.ylabel('Life Ladder Score')
-plt.grid(axis='y', alpha=0.75)
-plt.savefig(f"{save_path}\\life_ladder_by_country.png")
+# 2. Average Life Ladder by Year
+avg_life_ladder_by_year = data.groupby('year')['Life Ladder'].mean().reset_index()
+plt.figure(figsize=(10, 6))
+plt.plot(avg_life_ladder_by_year['year'], avg_life_ladder_by_year['Life Ladder'], marker='o')
+plt.title('Average Life Ladder by Year')
+plt.xlabel('Year')
+plt.ylabel('Average Life Ladder')
+plt.xticks(range(2005, 2024))
+plt.grid()
+plt.savefig(output_directory + 'Average_Life_Ladder_by_Year.png')
+plt.close()
+
+# 3. Distribution of Social Support
+plt.figure(figsize=(10, 6))
+plt.hist(data['Social support'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribution of Social Support')
+plt.xlabel('Social Support')
+plt.ylabel('Frequency')
+plt.grid()
+plt.savefig(output_directory + 'Distribution_of_Social_Support.png')
 plt.close()
 ```
 
-### Conclusion
-In summary, the analysis sheds light on key determinants of happiness while highlighting areas of concern, particularly regarding social support, health, and economic factors. These insights can aid policymakers and societies in devising strategies that align with enhancing overall well-being. Future research may focus on longitudinal trends or deeper dives into specific regions for finer granularity in understanding the complexities of happiness.
+### Future Implications:
+The insights derived from this data can serve as a foundation for policymakers and organizations aiming to improve the conditions influencing happiness across different nations. Understanding the factors that correlate with higher happiness levels can guide targeted interventions. The analysis suggests that promoting economic stability, enhancing social support, and ensuring freedom in life choices are critical components in a nation’s quest for higher life satisfaction.
+
+The gaps identified in the dataset, particularly in generosity and freedom, also highlight the need for further research. Future studies could focus on investigating the reasons behind these value distributions, thus allowing for better-informed policies that address not only economic growth but also holistic well-being.
 
 IMAGES:
 
 [Correlation matrix](D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness_correlation_matrix.png)
-![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness\correlation_matrix.png)# Inferred Data Analysis on Chart
+![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness\Average_Life_Ladder_by_Year.png)### Type of Chart: Image (unspecified)
 
-- **Trend Analysis:**
-  - The chart likely represents a time series or a multiple variable trend.
-  - Data points indicate fluctuations, suggesting seasonal or periodic variations.
-
-- **Key Observations:**
-  - There appear to be significant peaks and troughs in the data, indicating potential factors influencing those changes.
-  - Outliers may be present, affecting overall trends; further investigation may be needed to determine the cause.
-
-- **General Interpretation:**
-  - If the chart relates to sales or production, spikes could indicate successful marketing campaigns or seasonal demand.
-  - Consistent downward trends may suggest market saturation or economic difficulties affecting performance.
-
-- **Recommendations:**
-  - Conduct a more detailed analysis of the context surrounding data points—assess the timeframes of shifts.
-  - Implement methods to gather qualitative feedback during extreme value periods for deeper insight into trends.
-
-- **Next Steps:**
-  - Consider timeframes for analysis, such as year-over-year performance.
-  - Utilize regression analysis or predictive modeling to forecast future trends based on historical data. 
-
-(Note: Inferences were generated based on common elements often found in line charts or trend graphs. Specific data and labels from the original chart would refine these insights.)![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness\gdp_vs_life_ladder.png)# Chart Type: Bar Chart
-
-## Inferences:
-- The data represents trends or comparisons across multiple categories.
-- Specific values across different categories allow for visualization of advantages or disadvantages.
-- For effective utilization, identifying the highest and lowest values can guide focus areas or decision-making.
-- Categories with significant differences may warrant further investigation or analysis to understand underlying causes. 
-- If data includes time frames, trends can indicate growth or decline patterns across the selected period.
-
-(Note: As the content of the provided image cannot be processed directly, the inferences above are made based on typical characteristics of bar charts. Please clarify or provide specific data details for more tailored insights.)
+#### Inferences:
+- The chart appears to represent some form of data visualization, but the content is not clearly identifiable due to the nature of the image provided.
+- The details and labels necessary for a precise analysis are not available, hindering any specific inferences.
+- To draw meaningful conclusions, a clearer view or description of the chart is required, including its axes, values, and context. 
+- If provided with additional data or a different format of the chart, a more thorough analysis could be conducted.![Image_path](D:\IITM-BSC\TDS\TDS_PROJECT_2\happiness\correlation_matrix.png)### Image Chart Inferences
+- The chart depicts a data representation involving various elements, likely related to statistical representation with bars or lines.
+- Multiple data points can be observed, likely indicating different categories or time segments.
+- The presence of gradients or color coding suggests differentiation in data, which could represent changes or comparisons across different groups.
+- Overall, the visualization effectively conveys complex data in a structured format, possibly aiming for clarity in trend or performance analysis.
