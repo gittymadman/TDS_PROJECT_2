@@ -1,6 +1,7 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
+# "ipykernel>=6.29.5",
 #     "matplotlib>=3.9.3",
 #     "numpy>=2.2.0",
 #     "openai>=1.57.1",
