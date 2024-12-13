@@ -1,0 +1,20 @@
+[project]
+name = "tds-project-2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.9.3",
+    "numpy>=2.2.0",
+    "openai>=1.57.1",
+    "pandas>=2.2.3",
+    "python-dotenv>=1.0.1",
+    "requests>=2.32.3",
+    "seaborn>=0.13.2",
+]
+
+[project.optional-dependencies]
+pandas-dependencies = [
+    "pandas>=2.2.3",
+]
